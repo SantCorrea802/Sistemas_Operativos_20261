@@ -20,14 +20,14 @@ mkdir example music photos projects
 ### Paso 5: Con un solo comando crear los archivos file1, file2, ..., file100 EN CADA UNO de los directorios recien creados
 
 for c in ~/operating-systems-20261/laboratories/lab0/*/; do
-> touch "$c"/file{1..100};
-> done
+  touch "$c"/file{1..100};
+done
 
 ### Paso 6: Con un solo comando borrar los primero 10 y ultimos 20 archivos creados en cada una de las carpetas
 
 for c in ~/operating-systems-20261/laboratories/lab0/*/; do
-> rm -f "$c"/file{1..10} "$c"/file{81..100};
-> done
+  rm -f "$c"/file{1..10} "$c"/file{81..100};
+done
 
 ### Paso 7: Mover las carpetas example, music y photos dentro de projects
 
