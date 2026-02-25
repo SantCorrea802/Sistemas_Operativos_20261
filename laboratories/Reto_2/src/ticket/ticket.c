@@ -17,7 +17,7 @@ Ticket* create_ticket(){
 
     t->id = _id;
     t->email = malloc(strlen(_email) + 1);
-    strcpy_s(t->email, strlen(_email) + 1, _email);
+    snprintf(t->email, strlen(_email) + 1,"%s", _email);
     t->type = _type;
     t->reg_number = get_reg_number();
     create_assets_file(t);
