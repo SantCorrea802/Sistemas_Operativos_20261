@@ -6,6 +6,7 @@
 #include <time.h>
 
 
+
 int get_reg_number() {
     
     static int initialized = 0;
@@ -106,30 +107,29 @@ int get_type(){
 void create_assets_file(Ticket* t){
     FILE* file;
 
-    errno_t err;
     char name_file[256];
     snprintf(name_file, sizeof(name_file),"assets/ticket_%d.txt", t->reg_number);
-    err = fopen_s(&file, name_file, "w");
+    
 
-    if (!file){
-        perror("File opening failed");
+    if ((file = fopen(name_file, "w"))==NULL){
+        printf("\n\tFile opening failed");
         return;
     }
     char desc[256];
     char info[256+strlen(desc)];
 
-    if(err==0){
-        if(request_ticket(desc)){
-            snprintf(info, sizeof(info),"Radicado: %d\nIdentificacion: %d\nEmail: %s\nTipo: %s\nDescripcion: %s\n", t->reg_number, t->id, t->email, translate_type(t->type), desc);
-            size_t r1 = fwrite(info, sizeof(char), strlen(info), file);
-            if(r1 != strlen(info)){
-                printf("\n\tError al escribir en el archivo\n");
-                return;
-            }
-            fclose(file);
-            printf("\n\tArchivo assets/ticket_%d.txt t->reg_number creado exitosamente\n", t->reg_number);
+    
+    if(request_ticket(desc)){
+        snprintf(info, sizeof(info),"Radicado: %d\nIdentificacion: %d\nEmail: %s\nTipo: %s\nDescripcion: %s\n", t->reg_number, t->id, t->email, translate_type(t->type), desc);
+        size_t r1 = fwrite(info, sizeof(char), strlen(info), file);
+        if(r1 != strlen(info)){
+            printf("\n\tError al escribir en el archivo\n");
+            return;
         }
+        fclose(file);
+        printf("\n\tArchivo assets/ticket_%d.txt t->reg_number creado exitosamente\n", t->reg_number);
     }
+    
 }
 
 char* translate_type(int type){
