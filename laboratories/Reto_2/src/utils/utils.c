@@ -19,7 +19,7 @@ int get_reg_number() {
 
 bool request_text(char* text, char* var, int size){
 
-    printf("\nIngrese %s", text); // Se pide ingresar el dato necesario
+    printf("\n%s", text); // Se pide ingresar el dato necesario
     if (fgets(var, size, stdin) == NULL){ // Si hay un error al leer el dato
         return false;
     }
@@ -39,7 +39,7 @@ bool request_number(char* text, int* var){
     char aux[100]; // variable auxiliar para leer el numero como texto
     char* endptr; // Para pasarla a la funcion strtol
 
-    printf("\nIngrese %s", text); // Se pide ingresar el dato necesario
+    printf("\n%s", text); // Se pide ingresar el dato necesario
     if (!fgets(aux, 100, stdin)){ // Si hay un error al leer el dato, false
         return false;
     }
@@ -96,7 +96,7 @@ bool request_id(int* id){
 
 int get_type(){
     int type;
-    if(!request_number("Ingrese el tipo de ticket:\n 1. Peticion\n 2. Queja\n 3. Reclamacion\n 4. Sugerencia\n 5. Denuncia\n", &type)){ // pedir tipo
+    if(!request_number("\n 1. Peticion\n 2. Queja\n 3. Reclamacion\n 4. Sugerencia\n 5. Denuncia\nIngrese el tipo de ticket:", &type)){ // pedir tipo
         printf("\n\tError al leer el tipo de ticket\n"); // Error al leer tipo
         return -1;
     }
