@@ -8,9 +8,8 @@ int main() {
   while(true){
     printf("\n\t1. Crear ticket\n");
     printf("\n\t2. Salir\n");
-    printf("\n\tIngrese su opcion: ");
     int option;
-    while (!request_number("su opcion: ", &option)) {
+    while (!request_number("Ingrese su opcion: ", &option)) {
       printf("\tOpcion invalida. Intente de nuevo.\n");
     }
     if (option == 1){
