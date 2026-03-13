@@ -5,7 +5,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-void roundRobin(Queue *queue, int current_time){
+void roundRobin(Queue* queues[], int queue_index, int* current_time, Process* finished_processes[], int* finished_count){
+
+    Queue* queue = queues[queue_index];
 
     // Si la cola no tiene procesos, no se hace nada
     if(queue->size == 0){return;}
@@ -14,7 +16,7 @@ void roundRobin(Queue *queue, int current_time){
 
     // si el proceso no habia empezado aun su ejecucion, se inicia en 
     if(process->start_time == -1){
-        process->start_time = current_time;
+        process->start_time = *current_time;
         process->first_response_time = 0.0;
     }
 
@@ -23,15 +25,33 @@ void roundRobin(Queue *queue, int current_time){
     int time_slice = (process->remaining_time < queue->quantum) ? process->remaining_time : queue->quantum;
     process->remaining_time -= time_slice;
 
-    printf("\n\t\tEN t = %d SE EJECUTA\n\tPID:%d, Arrival Time: %d, Remaining Time: %d, Start Time: %d", current_time, process->id, process->arrival_time, process->remaining_time, process->start_time);
+    printf("\n\t\tEN t = %d SE EJECUTA\n\tPID:%d, Arrival Time: %d, Remaining Time: %d, Start Time: %d", *current_time, process->id, process->arrival_time, process->remaining_time, process->start_time);
+
+    // Incrementar el tiempo por el time_slice
+    *current_time += time_slice;
 
     // Si ya se ha terminado su ejecucion, entonces calculamos response_time
     if (process->remaining_time == 0){
         process->first_response_time = process->start_time - process->arrival_time;
-        process->finish_time = current_time + time_slice;
-        printf(", Finish Time: %d, Response Time: %.2f\n", process->finish_time, process->first_response_time); 
+        process->finish_time = *current_time;
+        double turnaround = process->finish_time - process->arrival_time;
+        double waiting = turnaround - process->burst_time;
+        printf(", Finish Time: %d, Response Time: %.2f, Turnaround: %.2f, Waiting: %.2f\n", process->finish_time, process->first_response_time, turnaround, waiting); 
         process->current_queue = NULL;
-        deleteProcess(process);
+
+        // Guardar en finished
+        finished_processes[(*finished_count)++] = process;
+    } else {
+        // Si no terminó, decidir si demover o reinsertar
+        if (time_slice == queue->quantum && queue_index < 2) {
+            // Democión: consumió todo el quantum, mover a la siguiente cola
+            printf(" -> Demovido a Q%d\n", queue_index + 1);
+            insertProcess(queues[queue_index + 1], process, *current_time);
+        } else {
+            // Reinsertar en la misma cola
+            printf(" -> Reinsertado en Q%d\n", queue_index);
+            insertProcess(queues[queue_index], process, *current_time);
+        }
     }
 
 

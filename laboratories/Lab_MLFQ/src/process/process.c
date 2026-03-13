@@ -1,5 +1,6 @@
 #include "../../include/process/process.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 Process* createProcess(int arrival_time, int burst_time){
     Process* process =(Process*)malloc(sizeof(Process));
@@ -29,4 +30,19 @@ void deleteProcess(Process* process){
     free(process);
     free(process->current_queue);
     
+}
+
+void exportProcessToCSV(Process* process, const char* filename) {
+    FILE* file = fopen(filename, "a"); // Append mode
+    if (file == NULL) {
+        printf("Error al abrir el archivo %s\n", filename);
+        return;
+    }
+    double turnaround = process->finish_time - process->arrival_time;
+    double waiting = turnaround - process->burst_time;
+    fprintf(file, "%d,%d,%d,%d,%d,%.2f,%.2f,%.2f\n",
+            process->id, process->arrival_time, process->burst_time,
+            process->start_time, process->finish_time, process->first_response_time,
+            turnaround, waiting);
+    fclose(file);
 }

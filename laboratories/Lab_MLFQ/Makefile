@@ -1,0 +1,1 @@
+gcc -o main src/main.c src/process/process.c src/queue/queue.c src/utils/utils.c -Iinclude

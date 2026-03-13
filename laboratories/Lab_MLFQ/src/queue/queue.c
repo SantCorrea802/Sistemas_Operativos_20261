@@ -31,7 +31,6 @@ void setPriority(Queue *queue, int new_priority){
 // 
 void insertProcess(Queue *queue, Process *process, int current_time){
     process->current_queue = queue; // El proceso pertenece a esta cola
-    process->arrival_time = current_time; // El proceso llega a esta cola en el tiempo actual
     queue->size++; // El tamaño de la cola crece en uno
     // la lista o arreglo de procesos la aumentamos el tamaño a uno mas
     queue->processes = (Process*)realloc(queue->processes,queue->size * sizeof(Process));

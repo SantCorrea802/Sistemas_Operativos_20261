@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 // algoritmo RR
-void roundRobin(Queue* queue, int current_time);
+void roundRobin(Queue* queues[], int queue_index, int* current_time, Process* finished_processes[], int* finished_count);
 
 Queue* saveQueuesInList(int num_queues, int* quantums);
 
