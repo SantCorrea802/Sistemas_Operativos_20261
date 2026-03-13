@@ -5,16 +5,13 @@
 #include "../include/utils/utils.h"
 
 int main(){
-    // Crear las 3 colas con sus quantums y prioridades
-    // Q0: prioridad 0 (máxima), quantum 2
-    // Q1: prioridad 1, quantum 4
-    // Q2: prioridad 2, quantum 8
+    // crear las 3 colas
     Queue* queues[3];
     queues[0] = createQueue(2, 0);  // Q0
     queues[1] = createQueue(4, 1);  // Q1
     queues[2] = createQueue(8, 2);  // Q2
 
-    // Crear procesos según el escenario sugerido
+    // Crear procesos 
     Process* processes[4];
     processes[0] = createProcess(0, 8);  // P1: arrival=0, burst=8
     processes[1] = createProcess(1, 4);  // P2: arrival=1, burst=4
