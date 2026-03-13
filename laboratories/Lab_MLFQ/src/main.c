@@ -44,7 +44,7 @@ int main(){
             process_index++;
         }
 
-        // Seleccionar la cola de mayor prioridad (menor priority) no vacía
+        // Seleccionar la cola de mayor prioridad no vacía
         int selected_queue_index = -1;
         for (int i = 0; i < 3; i++) {
             if (queues[i]->size > 0) {

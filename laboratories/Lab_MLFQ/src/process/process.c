@@ -13,7 +13,7 @@ Process* createProcess(int arrival_time, int burst_time){
     process->first_response_time = -1.0; // de momento no tiene response time calculado
     process->current_queue = NULL; // aun no está en ninguna cola
     return process;
-}
+}//
 
 
 int getId(Process* process){return process->id;}

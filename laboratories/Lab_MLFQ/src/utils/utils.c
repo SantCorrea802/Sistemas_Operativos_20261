@@ -45,7 +45,7 @@ void roundRobin(Queue* queues[], int queue_index, int* current_time, Process* fi
         // Si no terminó, decidir si demover o reinsertar
         if (time_slice == queue->quantum && queue_index < 2) {
             // Democión: consumió todo el quantum, mover a la siguiente cola
-            printf(" -> Demovido a Q%d\n", queue_index + 1);
+            printf(" -> Se movio a Q%d\n", queue_index + 1);
             insertProcess(queues[queue_index + 1], process, *current_time);
         } else {
             // Reinsertar en la misma cola
