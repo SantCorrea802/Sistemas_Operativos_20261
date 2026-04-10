@@ -6,6 +6,7 @@ RUN apt-get update \
        passwd \
        login \
        procps \
+       make \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/reto3
