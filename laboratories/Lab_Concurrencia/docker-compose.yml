@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16
+    container_name: lab-postgres
+    environment:
+      POSTGRES_DB: labdb
+      POSTGRES_USER: labuser
+      POSTGRES_PASSWORD: labpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U labuser -d labdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  init-db:
+    image: postgres:16
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: labpass
+    volumes:
+      - ./db/init.sql:/init.sql:ro
+    command:
+      [
+        "psql",
+        "-h", "db",
+        "-U", "labuser",
+        "-d", "labdb",
+        "-f", "/init.sql"
+      ]
+
+  worker:
+    build: .
+    depends_on:
+      init-db:
+        condition: service_completed_successfully
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: labdb
+      DB_USER: labuser
+      DB_PASSWORD: labpass
+      SHARED_LOG_PATH: /shared/logs/workers.log
+    volumes:
+      - ./shared:/shared
