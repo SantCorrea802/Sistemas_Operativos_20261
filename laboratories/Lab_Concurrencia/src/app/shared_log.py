@@ -8,12 +8,9 @@ class SharedLogger:
         self.path = path
 
     def write(self, worker_id: str, message: str) -> None:
-        """
-        Escritura protegida sobre archivo compartido.
-
-        flock toma un lock exclusivo sobre el archivo para evitar
-        escrituras mezcladas entre contenedores.
-        """
+        
+        #Escritura protegida sobre archivo compartido, flock toma un lock exclusivo sobre el archivo para evitar escrituras mezcladas entre contenedores
+        
         os.makedirs(os.path.dirname(self.path), exist_ok=True)
 
         timestamp = datetime.now(timezone.utc).isoformat()

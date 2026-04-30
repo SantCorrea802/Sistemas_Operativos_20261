@@ -17,15 +17,12 @@ class TaskRepository:
 
     def claim_next_task(self) -> Optional[Task]:
         """
-        Reclama una tarea pendiente de forma segura.
-
-        Mecanismo:
-        - Selecciona una fila pending.
-        - La bloquea con FOR UPDATE SKIP LOCKED.
-        - La marca como in_process.
-        - Retorna la tarea asignada al worker actual.
-
-        Esto evita que dos workers tomen el mismo registro.
+        Reclama una tarea pendiente de forma segura:
+        Selecciona una fila pending
+        La bloquea con FOR UPDATE SKIP LOCKED
+        La marca como in_process
+        Retorna la tarea asignada al worker actual
+        Esto evita que dos workers tomen el mismo registro
         """
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute("""
@@ -55,10 +52,9 @@ class TaskRepository:
             )
 
     def save_success(self, task: Task, worker_id: str, result: str) -> None:
-        """
-        Guarda el resultado y marca la tarea como procesada.
-        Ambas operaciones quedan en la misma transacción.
-        """
+        
+        #Guarda el resultado y marca la tarea como procesada Ambas operaciones quedan en la misma transacción
+        
         with self.conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO result (input_id, worker_identifier, result)
